@@ -14,11 +14,11 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   return (
     <header className="site-header">
-      <a href="#top" className="brand" aria-label="Farhan K. homepage">
+      <a href="#top" className="brand" aria-label="Farhan Malik Khokhar homepage">
         <span className="brand-seal" aria-hidden="true">FK</span>
         <span className="brand-name">
-          Farhan K.
-          <small>US Tax &amp; Bookkeeping</small>
+          Farhan Malik Khokhar
+          <small>Chartered Accountant · US Tax Consultant &amp; Bookkeeping Expert</small>
         </span>
       </a>
       <button type="button" className="menu-toggle" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-label="Toggle navigation">
