@@ -18,7 +18,8 @@ export default function Header() {
         <span className="brand-seal" aria-hidden="true">FK</span>
         <span className="brand-name">
           Farhan Malik Khokhar
-          <small>Chartered Accountant · US Tax Consultant &amp; Bookkeeping Expert</small>
+          <small>Chartered Accountant</small>
+          <small>US Tax Consultant &amp; Bookkeeping Expert</small>
         </span>
       </a>
       <button type="button" className="menu-toggle" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-label="Toggle navigation">
