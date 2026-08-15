@@ -391,3 +391,31 @@ h2 em{font-style:italic;color:var(--navy)}
   .form-detail-inner{grid-template-columns:1fr auto;gap:20px;padding:24px 20px}
   .form-detail-label{display:none}
 }
+
+/* ── Form tile accordion v4: detail always in DOM, shown/hidden by CSS only ── */
+.form-tile{display:flex;flex-direction:column;background:var(--paper-2);border:1.5px solid var(--rule-strong);padding:26px;transition:border-color .22s,box-shadow .22s}
+.form-tile:hover{border-color:var(--navy)}
+.form-tile.tile-open{border-color:var(--navy);box-shadow:6px 6px 0 rgba(18,50,90,.18)}
+.tile-summary{color:var(--ink-soft);font-size:13px;margin:0;flex:1}
+.tile-detail{
+  color:var(--ink-soft);font-size:13px;line-height:1.78;margin:0;
+  max-height:0;overflow:hidden;opacity:0;
+  transition:max-height .4s ease,opacity .35s ease,margin .35s ease;
+}
+.tile-open .tile-detail{max-height:400px;opacity:1;margin-top:14px}
+.tile-btn{
+  display:flex;align-items:center;gap:10px;
+  margin-top:16px;padding:10px 0 0;
+  border:0;border-top:1px solid var(--rule);
+  background:none;cursor:pointer;
+  font-family:var(--mono);font-size:10px;letter-spacing:1.4px;text-transform:uppercase;
+  color:var(--navy);width:100%;text-align:left;transition:color .2s;
+}
+.tile-btn:hover{color:var(--red)}
+.tile-open .tile-btn{color:var(--red)}
+.tile-icon{
+  width:22px;height:22px;border-radius:50%;
+  border:1.5px solid currentColor;
+  display:grid;place-items:center;
+  font-size:16px;line-height:1;flex-shrink:0;
+}

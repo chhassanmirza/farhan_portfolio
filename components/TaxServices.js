@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import Reveal from './Reveal';
 
 const forms = [
@@ -53,41 +53,8 @@ const extras = [
   },
 ];
 
-function DetailPanel({ form, onClose }) {
-  const ref = useRef(null);
-  useEffect(() => {
-    ref.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }, [form.number]);
-
-  return (
-    <div className="form-detail-panel" ref={ref}>
-      <div className="form-detail-inner">
-        <div className="form-detail-label">
-          <small>Form</small>
-          <strong>{form.number}</strong>
-        </div>
-        <div className="form-detail-body">
-          <h4>{form.entity}</h4>
-          <p>{form.detail}</p>
-        </div>
-        <button
-          className="form-detail-close"
-          onClick={onClose}
-          aria-label="Close detail"
-        >
-          ✕ Close
-        </button>
-      </div>
-    </div>
-  );
-}
-
 export default function TaxServices() {
   const [open, setOpen] = useState(null);
-
-  const toggle = (number) => setOpen((prev) => (prev === number ? null : number));
-
-  const openForm = forms.find((f) => f.number === open) || null;
 
   return (
     <section className="section tax-services" id="tax">
@@ -95,49 +62,41 @@ export default function TaxServices() {
         <p className="section-label">Part I · Tax Preparation</p>
         <h2>Every entity, every form.</h2>
         <p className="section-lead">
-          The core of the practice is US tax preparation. Each return below is
-          prepared, reviewed and filed, with every line explained in plain language
-          before anything goes to the IRS. Click any card for full detail.
+          The core of the practice is US tax preparation. Each return is prepared,
+          reviewed and filed, with every line explained in plain language before
+          anything goes to the IRS. Click any card for full detail.
         </p>
       </Reveal>
 
-      {/* All 6 cards always rendered — nothing disappears */}
       <div className="form-grid">
-        {forms.map((form, i) => {
+        {forms.map((form) => {
           const isOpen = open === form.number;
           return (
-            <Reveal
+            <div
               key={form.number}
-              className={`form-tile ${isOpen ? 'is-open' : ''}`}
-              delay={i * 60}
+              className={`form-tile ${isOpen ? 'tile-open' : ''}`}
             >
               <div className="form-tile-head">
                 <small>Form</small>
                 <strong>{form.number}</strong>
               </div>
               <h3>{form.entity}</h3>
-              <p>{form.summary}</p>
+              <p className="tile-summary">{form.summary}</p>
+
+              {/* Detail text — hidden via CSS, not unmounted */}
+              <p className="tile-detail">{form.detail}</p>
+
               <button
-                className="accordion-toggle"
-                onClick={() => toggle(form.number)}
+                className="tile-btn"
+                onClick={() => setOpen(isOpen ? null : form.number)}
                 aria-expanded={isOpen}
-                aria-label={`${isOpen ? 'Close' : 'Open'} detail for Form ${form.number}`}
               >
-                <span className="accordion-icon" aria-hidden="true">
-                  {isOpen ? '−' : '+'}
-                </span>
-                <span>{isOpen ? 'Close detail' : 'More detail'}</span>
+                <span className="tile-icon">{isOpen ? '−' : '+'}</span>
+                {isOpen ? 'Close detail' : 'More detail'}
               </button>
-            </Reveal>
+            </div>
           );
         })}
-      </div>
-
-      {/* Detail panel always BELOW the grid, slides in/out with CSS */}
-      <div className={`form-detail-wrap ${openForm ? 'is-open' : ''}`}>
-        {openForm && (
-          <DetailPanel form={openForm} onClose={() => setOpen(null)} />
-        )}
       </div>
 
       <div className="tax-extras">
