@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Reveal from './Reveal';
 
 const forms = [
@@ -53,21 +53,41 @@ const extras = [
   },
 ];
 
-/* Cards are arranged in rows of 3. When a card is opened, the
-   detail panel is inserted as a full-width row directly below
-   its row — no content collapses, nothing jumps. */
-const ROW_SIZE = 3;
+function DetailPanel({ form, onClose }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    ref.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, [form.number]);
+
+  return (
+    <div className="form-detail-panel" ref={ref}>
+      <div className="form-detail-inner">
+        <div className="form-detail-label">
+          <small>Form</small>
+          <strong>{form.number}</strong>
+        </div>
+        <div className="form-detail-body">
+          <h4>{form.entity}</h4>
+          <p>{form.detail}</p>
+        </div>
+        <button
+          className="form-detail-close"
+          onClick={onClose}
+          aria-label="Close detail"
+        >
+          ✕ Close
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export default function TaxServices() {
   const [open, setOpen] = useState(null);
 
   const toggle = (number) => setOpen((prev) => (prev === number ? null : number));
 
-  /* Build rows */
-  const rows = [];
-  for (let i = 0; i < forms.length; i += ROW_SIZE) {
-    rows.push(forms.slice(i, i + ROW_SIZE));
-  }
+  const openForm = forms.find((f) => f.number === open) || null;
 
   return (
     <section className="section tax-services" id="tax">
@@ -81,55 +101,43 @@ export default function TaxServices() {
         </p>
       </Reveal>
 
-      <div className="form-accordion-wrap">
-        {rows.map((row, rowIndex) => {
-          const openInRow = row.find((f) => f.number === open);
+      {/* All 6 cards always rendered — nothing disappears */}
+      <div className="form-grid">
+        {forms.map((form, i) => {
+          const isOpen = open === form.number;
           return (
-            <div key={rowIndex} className="form-row">
-              <div className="form-grid">
-                {row.map((form, i) => {
-                  const isOpen = open === form.number;
-                  return (
-                    <Reveal key={form.number} className={`form-tile ${isOpen ? 'is-open' : ''}`} delay={i * 60}>
-                      <div className="form-tile-head">
-                        <small>Form</small>
-                        <strong>{form.number}</strong>
-                      </div>
-                      <h3>{form.entity}</h3>
-                      <p>{form.summary}</p>
-                      <button
-                        className="accordion-toggle"
-                        onClick={() => toggle(form.number)}
-                        aria-expanded={isOpen}
-                        aria-label={`${isOpen ? 'Close' : 'Open'} detail for Form ${form.number}`}
-                      >
-                        <span className="accordion-icon" aria-hidden="true">{isOpen ? '−' : '+'}</span>
-                        <span>{isOpen ? 'Less detail' : 'More detail'}</span>
-                      </button>
-                    </Reveal>
-                  );
-                })}
+            <Reveal
+              key={form.number}
+              className={`form-tile ${isOpen ? 'is-open' : ''}`}
+              delay={i * 60}
+            >
+              <div className="form-tile-head">
+                <small>Form</small>
+                <strong>{form.number}</strong>
               </div>
-
-              {/* Detail panel sits BELOW the row, full width, no collapse */}
-              {openInRow && (
-                <div className="form-detail-panel">
-                  <div className="form-detail-inner">
-                    <div className="form-detail-label">
-                      <small>Form</small>
-                      <strong>{openInRow.number}</strong>
-                    </div>
-                    <div className="form-detail-body">
-                      <h4>{openInRow.entity}</h4>
-                      <p>{openInRow.detail}</p>
-                    </div>
-                    <button className="form-detail-close" onClick={() => setOpen(null)} aria-label="Close detail">✕</button>
-                  </div>
-                </div>
-              )}
-            </div>
+              <h3>{form.entity}</h3>
+              <p>{form.summary}</p>
+              <button
+                className="accordion-toggle"
+                onClick={() => toggle(form.number)}
+                aria-expanded={isOpen}
+                aria-label={`${isOpen ? 'Close' : 'Open'} detail for Form ${form.number}`}
+              >
+                <span className="accordion-icon" aria-hidden="true">
+                  {isOpen ? '−' : '+'}
+                </span>
+                <span>{isOpen ? 'Close detail' : 'More detail'}</span>
+              </button>
+            </Reveal>
           );
         })}
+      </div>
+
+      {/* Detail panel always BELOW the grid, slides in/out with CSS */}
+      <div className={`form-detail-wrap ${openForm ? 'is-open' : ''}`}>
+        {openForm && (
+          <DetailPanel form={openForm} onClose={() => setOpen(null)} />
+        )}
       </div>
 
       <div className="tax-extras">
