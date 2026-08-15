@@ -419,3 +419,53 @@ h2 em{font-style:italic;color:var(--navy)}
   display:grid;place-items:center;
   font-size:16px;line-height:1;flex-shrink:0;
 }
+
+/* ── Form tile accordion FINAL ── */
+.ftile-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+  align-items:start; /* critical: each card only as tall as its own content */
+  margin-bottom:40px;
+}
+.ftile{
+  background:var(--paper-2);
+  border:1.5px solid var(--rule-strong);
+  padding:26px;
+  display:flex;
+  flex-direction:column;
+  transition:border-color .2s,box-shadow .2s;
+}
+.ftile:hover{border-color:var(--navy)}
+.ftile-open{border-color:var(--navy);box-shadow:5px 5px 0 rgba(18,50,90,.15)}
+.ftile-num{display:flex;align-items:baseline;gap:7px;margin-bottom:14px}
+.ftile-num small{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-soft)}
+.ftile-num strong{font-family:var(--mono);font-weight:600;font-size:24px;color:var(--navy)}
+.ftile h3{font-family:var(--serif);font-size:19px;margin:0 0 8px}
+.ftile-summary{color:var(--ink-soft);font-size:13px;margin:0}
+.ftile-btn{
+  display:flex;align-items:center;gap:9px;
+  margin-top:16px;padding:10px 0 0;
+  border:0;border-top:1px solid var(--rule);
+  background:none;cursor:pointer;
+  font-family:var(--mono);font-size:10px;letter-spacing:1.4px;text-transform:uppercase;
+  color:var(--navy);text-align:left;transition:color .2s;
+}
+.ftile-btn:hover,.ftile-open .ftile-btn{color:var(--red)}
+.ftile-icon{
+  width:21px;height:21px;border-radius:50%;
+  border:1.5px solid currentColor;
+  display:grid;place-items:center;
+  font-size:15px;line-height:1;flex-shrink:0;
+}
+.ftile-detail{
+  border-top:1px solid var(--rule);
+  margin-top:14px;padding-top:14px;
+  animation:fadeUp .25s ease forwards;
+}
+.ftile-detail p{
+  color:var(--ink-soft);font-size:13px;
+  line-height:1.78;margin:0;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(max-width:820px){.ftile-grid{grid-template-columns:1fr}}
