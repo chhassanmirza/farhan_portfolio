@@ -282,3 +282,37 @@ h2 em{font-style:italic;color:var(--navy)}
 .fm-cta-inner .btn-primary:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 rgba(247,245,238,.4)}
 @media(max-width:1060px){.fm-grid{grid-template-columns:repeat(2,1fr)}.fm-images{grid-template-columns:repeat(2,1fr)}.fm-images .fm-image-wrap:last-child{display:none}}
 @media(max-width:640px){.fm-grid{grid-template-columns:1fr}.fm-images{grid-template-columns:1fr}.fm-cta-inner{padding:26px 20px}.fm-cta-inner .btn{width:100%;text-align:center}}
+
+/* ── Form card accordion ── */
+.accordion-tile{display:flex;flex-direction:column}
+.form-summary{flex:1}
+.accordion-toggle{
+  display:flex;align-items:center;gap:10px;
+  margin-top:16px;padding:10px 0 0;
+  border:0;border-top:1px solid var(--rule);
+  background:none;cursor:pointer;
+  font-family:var(--mono);font-size:10px;letter-spacing:1.4px;text-transform:uppercase;
+  color:var(--navy);width:100%;text-align:left;
+  transition:color .2s;
+}
+.accordion-toggle:hover{color:var(--red)}
+.accordion-icon{
+  width:22px;height:22px;border-radius:50%;
+  border:1.5px solid currentColor;
+  display:grid;place-items:center;
+  font-size:16px;line-height:1;flex-shrink:0;
+  transition:transform .3s;
+}
+.accordion-tile.is-open .accordion-icon{transform:rotate(180deg)}
+.accordion-body{
+  max-height:0;overflow:hidden;
+  transition:max-height .42s cubic-bezier(.4,0,.2,1),opacity .35s ease,padding .35s ease;
+  opacity:0;padding:0 0 0;
+}
+.accordion-tile.is-open .accordion-body{
+  max-height:600px;opacity:1;padding:16px 0 4px;
+}
+.accordion-body p{
+  font-size:13px;color:var(--ink-soft);line-height:1.78;
+  margin:0;border-top:1px solid var(--rule);padding-top:16px;
+}

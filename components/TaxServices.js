@@ -1,12 +1,45 @@
+'use client';
+
+import { useState } from 'react';
 import Reveal from './Reveal';
 
 const forms = [
-  ['1040', 'Individual returns', 'Federal individual income tax, prepared and e-filed.'],
-  ['1040NR', 'Nonresident returns', 'For nonresident aliens with US income or filing needs.'],
-  ['1040X', 'Amended returns', 'Corrections to prior-year filings, handled cleanly.'],
-  ['1120-S', 'S Corporations', 'Corporate returns with shareholder K-1s that tie out.'],
-  ['1065', 'Partnerships', 'Partnership returns and partner K-1s, allocations done right.'],
-  ['1120', 'C Corporations', 'Corporate income tax, federal and state.'],
+  {
+    number: '1040',
+    entity: 'Individual returns',
+    summary: 'Federal individual income tax, prepared and e-filed.',
+    detail: `The Form 1040 covers all individual income: wages, self-employment, rental income, dividends, capital gains and more. Every supporting schedule — Schedule A (itemized deductions), Schedule B (interest and dividends), Schedule C (self-employment), Schedule D (capital gains) and Schedule E (rental or pass-through income) — is prepared alongside the main return. State returns are filed at the same time. The finished return is reviewed line by line before anything is submitted, and every number is explained in plain language so you understand exactly what was filed and why.`,
+  },
+  {
+    number: '1040NR',
+    entity: 'Nonresident returns',
+    summary: 'For nonresident aliens with US income or filing needs.',
+    detail: `Form 1040NR applies to foreign nationals who earned US-source income — rental income from US property, wages from a US employer, dividends from US companies, or business income effectively connected with a US trade. It also applies to individuals who held a US visa during the year and need to determine their residency status under the substantial presence test. Treaty positions, ITIN applications and FIRPTA withholding situations are all handled as part of the engagement.`,
+  },
+  {
+    number: '1040X',
+    entity: 'Amended returns',
+    summary: 'Corrections to prior-year filings, handled cleanly.',
+    detail: `Form 1040X is used when a prior-year return needs correcting: missed deductions, income reported in the wrong year, a late-arriving K-1, a reclassified expense or an error in filing status. The amended return includes a clear explanation of each change, the revised figures, and the net refund or balance due. If the original return was filed by someone else and you are unsure what was reported, the prior-year return is reviewed first before any amendment is prepared.`,
+  },
+  {
+    number: '1120-S',
+    entity: 'S Corporations',
+    summary: 'Corporate returns with shareholder K-1s that tie out.',
+    detail: `Form 1120-S is the annual return for S corporations. It reports the company's income, deductions, credits and distributions, then allocates each item to shareholders on Schedule K-1 in proportion to their ownership. The K-1s have to tie back to the 1120-S exactly — a common source of IRS notices when they don't. Basis calculations are tracked for each shareholder, because basis determines whether a loss is deductible and whether a distribution is taxable. State-level composite returns and shareholder-level filings are coordinated at the same time.`,
+  },
+  {
+    number: '1065',
+    entity: 'Partnerships',
+    summary: 'Partnership returns and partner K-1s, allocations done right.',
+    detail: `Form 1065 is the return for partnerships and multi-member LLCs. Income, losses, credits and deductions are reported at the entity level and then allocated to each partner on Schedule K-1 according to the partnership agreement. Special allocations, guaranteed payments, Section 754 elections and partner capital account reconciliation are all handled as part of the return. Outside basis is tracked per partner, which matters every time a distribution is made or a loss is claimed.`,
+  },
+  {
+    number: '1120',
+    entity: 'C Corporations',
+    summary: 'Corporate income tax, federal and state.',
+    detail: `Form 1120 is the federal return for C corporations. It covers all corporate income and deductions, including depreciation schedules, officer compensation, dividend received deductions and net operating loss carryforwards. Estimated tax payment schedules are planned to avoid underpayment penalties. State corporate income tax returns are filed alongside the federal return, with apportionment calculations handled for companies operating in multiple states. For companies considering an S election, the tax cost of conversion is modeled before any decision is made.`,
+  },
 ];
 
 const extras = [
@@ -21,6 +54,10 @@ const extras = [
 ];
 
 export default function TaxServices() {
+  const [open, setOpen] = useState(null);
+
+  const toggle = (number) => setOpen((prev) => (prev === number ? null : number));
+
   return (
     <section className="section tax-services" id="tax">
       <Reveal className="section-head">
@@ -29,21 +66,36 @@ export default function TaxServices() {
         <p className="section-lead">
           The core of the practice is US tax preparation. Each return below is
           prepared, reviewed and filed, with every line explained in plain language
-          before anything goes to the IRS.
+          before anything goes to the IRS. Click any card for full detail.
         </p>
       </Reveal>
 
       <div className="form-grid">
-        {forms.map(([number, entity, detail], i) => (
-          <Reveal key={number} className="form-tile" delay={i * 60}>
-            <div className="form-tile-head">
-              <small>Form</small>
-              <strong>{number}</strong>
-            </div>
-            <h3>{entity}</h3>
-            <p>{detail}</p>
-          </Reveal>
-        ))}
+        {forms.map((form, i) => {
+          const isOpen = open === form.number;
+          return (
+            <Reveal key={form.number} className={`form-tile accordion-tile ${isOpen ? 'is-open' : ''}`} delay={i * 60}>
+              <div className="form-tile-head">
+                <small>Form</small>
+                <strong>{form.number}</strong>
+              </div>
+              <h3>{form.entity}</h3>
+              <p className="form-summary">{form.summary}</p>
+              <button
+                className="accordion-toggle"
+                onClick={() => toggle(form.number)}
+                aria-expanded={isOpen}
+                aria-label={`${isOpen ? 'Close' : 'Open'} detail for Form ${form.number}`}
+              >
+                <span className="accordion-icon" aria-hidden="true">{isOpen ? '−' : '+'}</span>
+                <span>{isOpen ? 'Less detail' : 'More detail'}</span>
+              </button>
+              <div className="accordion-body" aria-hidden={!isOpen}>
+                <p>{form.detail}</p>
+              </div>
+            </Reveal>
+          );
+        })}
       </div>
 
       <div className="tax-extras">
