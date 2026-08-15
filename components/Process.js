@@ -21,7 +21,7 @@ export default function Process() {
   return (
     <section className="section process" id="process">
       <Reveal className="section-head">
-        <p className="section-label">Line 4 · How an engagement runs</p>
+        <p className="section-label">Part V · How an engagement runs</p>
         <h2>Line by line, in order.</h2>
       </Reveal>
 

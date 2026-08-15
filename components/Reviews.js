@@ -31,7 +31,7 @@ export default function Reviews() {
   return (
     <section className="section reviews" id="reviews">
       <Reveal className="section-head">
-        <p className="section-label">Line 3 · Client reviews</p>
+        <p className="section-label">Part IV · Client reviews</p>
         <h2>In the clients&rsquo; own words.</h2>
         <p className="section-lead">
           Quoted directly from reviewed Upwork engagements. One pattern worth noting:

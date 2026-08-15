@@ -2,7 +2,7 @@ import Reveal from './Reveal';
 
 const engagements = [
   {
-    period: 'Oct 2024 – Jun 2025',
+    period: 'Oct 2024 to Jun 2025',
     title: 'Business ownership change, fully documented',
     detail: 'A nine-month engagement documenting the entire transfer process end to end. The client called it one of the best experiences they have had on Upwork.',
     rating: '5.0',
@@ -37,7 +37,7 @@ export default function Engagements() {
   return (
     <section className="section engagements" id="engagements">
       <Reveal className="section-head">
-        <p className="section-label">Line 2 · Selected engagements</p>
+        <p className="section-label">Part III · Selected engagements</p>
         <h2>210 jobs on the record. <em>Here are five.</em></h2>
         <p className="section-lead">
           Every entry below is a real, reviewed Upwork engagement. The full history
