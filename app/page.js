@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import Header from '../components/Header';
 import HeroForms from '../components/HeroForms';
 import TaxServices from '../components/TaxServices';
+import FinancialModeling from '../components/FinancialModeling';
 import Bookkeeping from '../components/Bookkeeping';
 import Engagements from '../components/Engagements';
 import Reviews from '../components/Reviews';
@@ -25,6 +26,7 @@ export default function Home() {
       <Header />
       <HeroForms />
       <TaxServices />
+      <FinancialModeling />
       <Bookkeeping />
       <Engagements />
       <Reviews />

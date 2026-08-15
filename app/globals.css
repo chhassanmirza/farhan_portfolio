@@ -261,3 +261,24 @@ h2 em{font-style:italic;color:var(--navy)}
   .stamp{opacity:.9;transform:rotate(-8deg) scale(1);animation:none}
   .form-slot{transition:none}
 }
+
+/* ── Financial Modeling ── */
+.fm{background:var(--paper);border-top:1.5px solid var(--rule-strong)}
+.fm-images{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:56px}
+.fm-image-wrap{overflow:hidden;border:1.5px solid var(--rule-strong);aspect-ratio:4/3}
+.fm-image-wrap img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.7) contrast(1.05);transition:transform .5s ease,filter .5s ease}
+.fm-image-wrap:hover img{transform:scale(1.04);filter:saturate(1) contrast(1)}
+.fm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:48px}
+.fm-card{background:var(--paper-2);border:1.5px solid var(--rule-strong);padding:28px;transition:transform .22s,box-shadow .22s,border-color .22s}
+.fm-card:hover{transform:translate(-3px,-3px);box-shadow:6px 6px 0 rgba(18,50,90,.18);border-color:var(--navy)}
+.fm-card-num{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--red);margin-bottom:14px}
+.fm-card h3{font-family:var(--serif);font-size:19px;margin:0 0 10px;color:var(--ink)}
+.fm-card p{color:var(--ink-soft);font-size:13px;margin:0;line-height:1.7}
+.fm-cta{border-top:1.5px solid var(--rule-strong);padding-top:40px}
+.fm-cta-inner{display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;background:var(--navy);padding:36px 40px}
+.fm-cta-inner h3{font-family:var(--serif);font-size:24px;color:var(--paper-2);margin:0 0 8px}
+.fm-cta-inner p{color:rgba(247,245,238,.7);font-size:14px;margin:0}
+.fm-cta-inner .btn-primary{background:var(--paper-2);border-color:var(--paper-2);color:var(--navy);white-space:nowrap;box-shadow:4px 4px 0 rgba(247,245,238,.3)}
+.fm-cta-inner .btn-primary:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 rgba(247,245,238,.4)}
+@media(max-width:1060px){.fm-grid{grid-template-columns:repeat(2,1fr)}.fm-images{grid-template-columns:repeat(2,1fr)}.fm-images .fm-image-wrap:last-child{display:none}}
+@media(max-width:640px){.fm-grid{grid-template-columns:1fr}.fm-images{grid-template-columns:1fr}.fm-cta-inner{padding:26px 20px}.fm-cta-inner .btn{width:100%;text-align:center}}
