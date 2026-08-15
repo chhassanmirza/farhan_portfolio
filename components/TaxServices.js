@@ -26,7 +26,7 @@ const forms = [
     number: '1120-S',
     entity: 'S Corporations',
     summary: 'Corporate returns with shareholder K-1s that tie out.',
-    detail: `Form 1120-S is the annual return for S corporations. It reports the company's income, deductions, credits and distributions, then allocates each item to shareholders on Schedule K-1 in proportion to their ownership. The K-1s have to tie back to the 1120-S exactly — a common source of IRS notices when they don't. Basis calculations are tracked for each shareholder, because basis determines whether a loss is deductible and whether a distribution is taxable. State-level composite returns and shareholder-level filings are coordinated at the same time.`,
+    detail: `Form 1120-S is the annual return for S corporations. It reports the company's income, deductions, credits and distributions, then allocates each item to shareholders on Schedule K-1 in proportion to their ownership. The K-1s have to tie back to the 1120-S exactly — a common source of IRS notices when they don't. Basis calculations are tracked for each shareholder, because basis determines whether a loss is deductible and whether a distribution is taxable.`,
   },
   {
     number: '1065',
@@ -38,7 +38,7 @@ const forms = [
     number: '1120',
     entity: 'C Corporations',
     summary: 'Corporate income tax, federal and state.',
-    detail: `Form 1120 is the federal return for C corporations. It covers all corporate income and deductions, including depreciation schedules, officer compensation, dividend received deductions and net operating loss carryforwards. Estimated tax payment schedules are planned to avoid underpayment penalties. State corporate income tax returns are filed alongside the federal return, with apportionment calculations handled for companies operating in multiple states. For companies considering an S election, the tax cost of conversion is modeled before any decision is made.`,
+    detail: `Form 1120 is the federal return for C corporations. It covers all corporate income and deductions, including depreciation schedules, officer compensation, dividend received deductions and net operating loss carryforwards. Estimated tax payment schedules are planned to avoid underpayment penalties. State corporate income tax returns are filed alongside the federal return, with apportionment calculations handled for companies operating in multiple states.`,
   },
 ];
 
@@ -53,10 +53,21 @@ const extras = [
   },
 ];
 
+/* Cards are arranged in rows of 3. When a card is opened, the
+   detail panel is inserted as a full-width row directly below
+   its row — no content collapses, nothing jumps. */
+const ROW_SIZE = 3;
+
 export default function TaxServices() {
   const [open, setOpen] = useState(null);
 
   const toggle = (number) => setOpen((prev) => (prev === number ? null : number));
+
+  /* Build rows */
+  const rows = [];
+  for (let i = 0; i < forms.length; i += ROW_SIZE) {
+    rows.push(forms.slice(i, i + ROW_SIZE));
+  }
 
   return (
     <section className="section tax-services" id="tax">
@@ -70,30 +81,53 @@ export default function TaxServices() {
         </p>
       </Reveal>
 
-      <div className="form-grid">
-        {forms.map((form, i) => {
-          const isOpen = open === form.number;
+      <div className="form-accordion-wrap">
+        {rows.map((row, rowIndex) => {
+          const openInRow = row.find((f) => f.number === open);
           return (
-            <Reveal key={form.number} className={`form-tile accordion-tile ${isOpen ? 'is-open' : ''}`} delay={i * 60}>
-              <div className="form-tile-head">
-                <small>Form</small>
-                <strong>{form.number}</strong>
+            <div key={rowIndex} className="form-row">
+              <div className="form-grid">
+                {row.map((form, i) => {
+                  const isOpen = open === form.number;
+                  return (
+                    <Reveal key={form.number} className={`form-tile ${isOpen ? 'is-open' : ''}`} delay={i * 60}>
+                      <div className="form-tile-head">
+                        <small>Form</small>
+                        <strong>{form.number}</strong>
+                      </div>
+                      <h3>{form.entity}</h3>
+                      <p>{form.summary}</p>
+                      <button
+                        className="accordion-toggle"
+                        onClick={() => toggle(form.number)}
+                        aria-expanded={isOpen}
+                        aria-label={`${isOpen ? 'Close' : 'Open'} detail for Form ${form.number}`}
+                      >
+                        <span className="accordion-icon" aria-hidden="true">{isOpen ? '−' : '+'}</span>
+                        <span>{isOpen ? 'Less detail' : 'More detail'}</span>
+                      </button>
+                    </Reveal>
+                  );
+                })}
               </div>
-              <h3>{form.entity}</h3>
-              <p className="form-summary">{form.summary}</p>
-              <button
-                className="accordion-toggle"
-                onClick={() => toggle(form.number)}
-                aria-expanded={isOpen}
-                aria-label={`${isOpen ? 'Close' : 'Open'} detail for Form ${form.number}`}
-              >
-                <span className="accordion-icon" aria-hidden="true">{isOpen ? '−' : '+'}</span>
-                <span>{isOpen ? 'Less detail' : 'More detail'}</span>
-              </button>
-              <div className="accordion-body" aria-hidden={!isOpen}>
-                <p>{form.detail}</p>
-              </div>
-            </Reveal>
+
+              {/* Detail panel sits BELOW the row, full width, no collapse */}
+              {openInRow && (
+                <div className="form-detail-panel">
+                  <div className="form-detail-inner">
+                    <div className="form-detail-label">
+                      <small>Form</small>
+                      <strong>{openInRow.number}</strong>
+                    </div>
+                    <div className="form-detail-body">
+                      <h4>{openInRow.entity}</h4>
+                      <p>{openInRow.detail}</p>
+                    </div>
+                    <button className="form-detail-close" onClick={() => setOpen(null)} aria-label="Close detail">✕</button>
+                  </div>
+                </div>
+              )}
+            </div>
           );
         })}
       </div>
